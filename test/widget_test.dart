@@ -10,7 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mothers_hub/data_provider/data_provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:mothers_hub/main.dart';
-import 'package:mothers_hub/repository/course_repository.dart';
+import 'package:mothers_hub/repository/post_repository.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {

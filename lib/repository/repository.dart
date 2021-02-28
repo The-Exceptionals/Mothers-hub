@@ -1,1 +1,2 @@
-export 'course_repository.dart';
+export 'post_repository.dart';
+export 'event_repository.dart';

@@ -2,24 +2,26 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 @immutable
-class Post extends Equatable {
-  Post({this.id, @required this.title, @required this.body});
+class Event extends Equatable {
+  Event({this.id, @required this.title, @required this.body, @required this.date});
 
   final String id;
   final String title;
   final String body;
+  final String date;
 
   @override
   List<Object> get props => [id, title, body];
 
-  factory Post.fromJson(Map<String, dynamic> json) {
-    return Post(
+  factory Event.fromJson(Map<String, dynamic> json) {
+    return Event(
       id: json['id'],
       title: json['title'],
       body: json['body'],
+      date: json['date']
     );
   }
 
   @override
-  String toString() => 'Post { id: $id, title: $title}';
+  String toString() => 'Event { id: $id, title: $title}';
 }

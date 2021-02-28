@@ -1,5 +1,5 @@
 import 'package:meta/meta.dart';
-import 'package:mothers_hub/post.dart';
+import 'package:mothers_hub/mh.dart';
 
 class PostRepository {
   final PostDataProvider dataProvider;

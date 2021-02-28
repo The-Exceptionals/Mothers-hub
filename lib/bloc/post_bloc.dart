@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mothers_hub/bloc/bloc.dart';
-import 'package:mothers_hub/post.dart';
+import 'package:mothers_hub/mh.dart';
 
 class PostBloc extends Bloc<PostEvent, PostState> {
   final PostRepository postRepository;

@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:mothers_hub/post.dart';
+import 'package:mothers_hub/mh.dart';
 
 abstract class PostEvent extends Equatable {
   const PostEvent();

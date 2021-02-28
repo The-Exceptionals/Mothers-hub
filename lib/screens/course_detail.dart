@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mothers_hub/post.dart';
+import 'package:mothers_hub/mh.dart';
 
 class PostDetail extends StatelessWidget {
   static const routeName = 'postDetail';
