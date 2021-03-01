@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mothers_hub/bloc_observer.dart';
 import 'package:mothers_hub/mh.dart';
 import 'package:http/http.dart' as http;
+import 'package:mothers_hub/views/home.dart';
 
 void main() {
   Bloc.observer = SimpleBlocObserver();
@@ -31,14 +32,19 @@ class PostApp extends StatelessWidget {
         create: (context) =>
             PostBloc(postRepository: this.postRepository)..add(PostLoad()),
         child: MaterialApp(
-          title: 'Post App',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-            visualDensity: VisualDensity.adaptivePlatformDensity,
-          ),
           onGenerateRoute: PostAppRoute.generateRoute,
+          initialRoute: LandingPage,
+          home: BlocListener(
+            listener: (context, event) {
+              if (event is AuthAuthenticated) {
+                return Navigator.pushNamed(context, HomePage);
+              } else if (event is AuthNotAuthenticated) {
+                return Navigator.pushNamed(context, LandingPage);
+              }
+            },
+            )
+                  ),
         ),
-      ),
     );
   }
 }
