@@ -42,18 +42,9 @@ class PostApp extends StatelessWidget {
                 return Navigator.pushNamed(context, LandingPage);
               }
             },
-            child: BlocBuilder<AuthBloc, AuthState>(
-              BlocProvider.of<AuthBloc>(context),
-              builder: (context, state) {
-                if (state is AuthNotAuthenticated) {
-                  return LandingPage();
-                }
-                return Center();
-              },
-            ),
-          ),
+            )
+                  ),
         ),
-      ),
     );
   }
 }
