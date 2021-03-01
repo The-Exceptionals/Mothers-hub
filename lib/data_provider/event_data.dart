@@ -4,7 +4,7 @@ import 'package:mothers_hub/mh.dart';
 import 'package:http/http.dart' as http;
 
 class EventDataProvider {
-  final _baseUrl = 'http://192.168.0.189:5000';
+  final _baseUrl = 'http://192.168.0.101:5000';
   final http.Client httpClient;
 
   EventDataProvider({@required this.httpClient}) : assert(httpClient != null);
