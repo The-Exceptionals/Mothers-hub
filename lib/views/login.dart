@@ -1,9 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mothers_hub/bloc/auth/auth_bloc.dart';
+import 'package:mothers_hub/bloc/bloc.dart';
+import 'package:mothers_hub/bloc/login/login_event.dart';
+import 'package:mothers_hub/models/users.dart';
+import 'package:mothers_hub/repository/auth_repository.dart';
 import 'package:mothers_hub/utils/colors.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:flutter/services.dart';
+import 'package:mothers_hub/views/home.dart';
+import 'package:mothers_hub/views/mh_route.dart';
+import 'package:mothers_hub/views/register.dart';
+import 'package:mothers_hub/views/reset_password.dart';
+class Auth extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    final authService =
+    RepositoryProvider.of<AuthenticationRepository>(context);
+    final authBloc = BlocProvider.of<AuthenticationBloc>(context);
+    return Container(
+      alignment: Alignment.center,
+      child: BlocProvider<LoginBloc>(
+        create: (context) => LoginBloc(authBloc, authService),
+        child: LoginPage(),
+      ),
+    );
+  }
+
+
+}
 
 class LoginPage extends StatefulWidget {
+
+  static const routeName = "/loginViewRoute";
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -101,7 +130,11 @@ class _LoginPageState extends State<LoginPage> {
       ),
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: () => Navigator.pushNamed(context, homeViewRoute),
+        onPressed: ()  {
+          BlocProvider.of<LoginBloc>(context).add(LoginInWithEmailButtonPressed(user:User(email:'hh@gmail.com',password:'12345678')));
+          Navigator.pushNamed(context, HomePage.routeName);
+
+        },
         color: Colors.white,
         shape: new RoundedRectangleBorder(
           borderRadius: new BorderRadius.circular(7.0),
@@ -119,7 +152,7 @@ class _LoginPageState extends State<LoginPage> {
     final forgotPassword = Padding(
       padding: EdgeInsets.only(top: 50.0),
       child: InkWell(
-        onTap: () => Navigator.pushNamed(context, resetPasswordViewRoute),
+        onTap: () => Navigator.pushNamed(context, ResetPasswordPage.routeName),
         child: Center(
           child: Text(
             'Forgot Password?',
@@ -136,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
     final newUser = Padding(
       padding: EdgeInsets.only(top: 20.0),
       child: InkWell(
-        onTap: () => Navigator.pushNamed(context, registerViewRoute),
+        onTap: () => Navigator.pushNamed(context, RegisterPage.routeName),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[

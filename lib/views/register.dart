@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mothers_hub/_routing/routes.dart';
 import 'package:mothers_hub/utils/colors.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:mothers_hub/views/home.dart';
 
 class RegisterPage extends StatefulWidget {
+  static const routeName = "/registerViewRoute";
   @override
   _RegisterPageState createState() => _RegisterPageState();
 }
@@ -105,7 +106,7 @@ class _RegisterPageState extends State<RegisterPage> {
           elevation: 10.0,
           shadowColor: Colors.white70,
           child: MaterialButton(
-            onPressed: () => Navigator.of(context).pushNamed(homeViewRoute),
+            onPressed: () => Navigator.of(context).pushNamed(HomePage.routeName),
             child: Text(
               'CREATE ACCOUNT',
               style: TextStyle(

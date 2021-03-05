@@ -1,32 +1,18 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:mothers_hub/models/users.dart';
 
 abstract class LoginEvent extends Equatable {
-  LoginEvent([List props = const []]) : super();
+  @override
+  List<Object> get props => [];
 }
 
-class OnSubmited extends LoginEvent {
-  final String email;
-  final String password;
+class LoginInWithEmailButtonPressed extends LoginEvent {
+  final User user;
 
-  OnSubmited({@required this.email, @required this.password});
 
-  @override
-  // TODO: implement props
-  List<Object> get props => [this.email, this.password];
-}
-
-class OnError extends LoginEvent {
-  final String error;
-  OnError({@required this.error}) : super([error]);
+  LoginInWithEmailButtonPressed({@required this.user});
 
   @override
-  // TODO: implement props
-  List<Object> get props => [this.error];
-}
-
-class OnSuccess extends LoginEvent {
-  @override
-  // TODO: implement props
-  List<Object> get props => null;
+  List<Object> get props => [user];
 }

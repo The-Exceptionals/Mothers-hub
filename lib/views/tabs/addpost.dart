@@ -8,19 +8,19 @@ import 'package:mothers_hub/views/mh_route.dart';
 
 
 class AddPostPage extends StatefulWidget {
-  static const routeName = 'AddPostPage';
-  final PostArgument args;
-
-  AddPostPage({this.args});
+  static const routeName = '/AddPostViewRoute';
+  
   @override
   AddPostState createState() => AddPostState();
 }
 
 class AddPostState extends State<AddPostPage> {
   final _formKey = GlobalKey<FormState>();
-
+ String titleevent="";
+ String eventBody="";
   final Map<String, dynamic> _post = {};
-
+   String title="";
+   String body="";
   @override
   Widget build(BuildContext context) {
     final appBar = Padding(
@@ -60,9 +60,61 @@ class AddPostState extends State<AddPostPage> {
         key: _formKey,
         child: Column(
           children: <Widget>[
-            _buildFormField('Title', LineIcons.pencil, 8),
+        TextFormField(
+          onChanged: (value){
+            setState(() {
+              title=value;
+            });
+          },
+        decoration: InputDecoration(
+          labelText: "title",
+          labelStyle: TextStyle(color: Colors.black),
+          prefixIcon: Icon(
+            LineIcons.pencil,
+            color: Colors.black,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black),
+          ),
+          isDense: true,
+          contentPadding: EdgeInsets.all(20),
+        ),
+        keyboardType: TextInputType.multiline,
+        maxLines: null,
+        style: TextStyle(color: Colors.black),
+        cursorColor: Colors.black,
+      ),
             formFieldSpacing,
-            _buildFormField('Post', LineIcons.pencil, 20),
+            TextFormField(
+              onChanged: (value){
+                setState(() {
+                  body=value;
+                });
+              },
+              decoration: InputDecoration(
+                labelText: "body",
+                labelStyle: TextStyle(color: Colors.black),
+                prefixIcon: Icon(
+                  LineIcons.pencil,
+                  color: Colors.black,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                ),
+                isDense: true,
+                contentPadding: EdgeInsets.all(20),
+              ),
+              keyboardType: TextInputType.multiline,
+              maxLines: null,
+              style: TextStyle(color: Colors.black),
+              cursorColor: Colors.black,
+            ),
             formFieldSpacing,
           ],
         ),
@@ -90,13 +142,13 @@ class AddPostState extends State<AddPostPage> {
             if (form.validate()){
               final PostEvent event =  PostCreate(
                  Post(
-                     title: this._post["title"],
-                     body: this._post["body"],
+                     title: title,
+                     body: body,
                    ),
                    );
              BlocProvider.of<PostBloc>(context).add(event);
              Navigator.of(context).pushNamedAndRemoveUntil(
-             HomePage().routeName, (route) => false);}},
+             HomePage.routeName, (route) => false);}},
             child: Text(
               'ADD POST',
               style: TextStyle(

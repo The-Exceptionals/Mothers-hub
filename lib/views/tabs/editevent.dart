@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:mothers_hub/views/home.dart';
 
 class EditEventPage extends StatefulWidget {
+  static const routeName = "/editEventViewRoute";
   @override
   EditEventState createState() => EditEventState();
 }
@@ -74,7 +76,7 @@ class EditEventState extends State<EditEventPage> {
           elevation: 10.0,
           shadowColor: Colors.black87,
           child: MaterialButton(
-            onPressed: () => Navigator.of(context).pushNamed(homeViewRoute),
+            onPressed: () => Navigator.of(context).pushNamed(HomePage.routeName),
             child: Text(
               'EDIT EVENT',
               style: TextStyle(

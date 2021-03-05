@@ -7,10 +7,7 @@ import 'package:mothers_hub/views/mh_route.dart';
 import 'package:line_icons/line_icons.dart';
 
 class EditPostPage extends StatefulWidget {
-  static const routeName = 'EditPostPage';
-  final PostArgument args;
-
-  EditPostPage({this.args});
+  static const routeName = '/editPostViewRoute';
   @override
   EditPostState createState() => EditPostState();
 }
@@ -90,13 +87,12 @@ class EditPostState extends State<EditPostPage> {
                 form.save();
                 final PostEvent event = PostUpdate(
                   Post(
-                      id: widget.args.post.id,
                       title: this._post["title"],
                       body: this._post["body"]),
                 );
                 BlocProvider.of<PostBloc>(context).add(event);
                 Navigator.of(context).pushNamedAndRemoveUntil(
-                    HomePage().routeName, (route) => false);
+                    HomePage.routeName, (route) => false);
               }
             },
             child: Text(

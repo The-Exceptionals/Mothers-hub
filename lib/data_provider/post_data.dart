@@ -2,25 +2,32 @@ import 'dart:convert';
 import 'package:meta/meta.dart';
 import 'package:mothers_hub/mh.dart';
 import 'package:http/http.dart' as http;
+import 'package:mothers_hub/utils/constants.dart';
+import 'package:mothers_hub/utils/shared_preferences.dart';
 
 class PostDataProvider {
-  final _baseUrl = 'http://192.168.0.101:5000';
+  final _baseUrl = baseUrl;
   final http.Client httpClient;
 
   PostDataProvider({@required this.httpClient}) : assert(httpClient != null);
 
   Future<Post> createPost(Post post) async {
     final response = await httpClient.post(
-      Uri.http('192.168.0.189:5000', '/post/add'),
-      headers: <String, String>{
+      Uri.http(address, '/post/add'),
+        headers: await SharedPrefUtils.getStringValuesSF().then((token){
+      print("jhhyughygyjgyygjyyj");
+      print(token);
+      return (<String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-      },
+        'Authorization': 'Bearer $token',
+      });
+    }),
       body: jsonEncode(<String, dynamic>{
         'title': post.title,
         'body': post.body,
       }),
     );
-
+     print(response.statusCode);
     if (response.statusCode == 200) {
       return Post.fromJson(jsonDecode(response.body));
     } else {
@@ -29,10 +36,22 @@ class PostDataProvider {
   }
 
   Future<List<Post>> getPosts() async {
-    final response = await httpClient.get('$_baseUrl/post/getAll');
+    final response = await httpClient.get('$_baseUrl/post/getAll',
+        headers: await SharedPrefUtils.getStringValuesSF().then((token){
+          print("jhhyughygyjgyygjyyj");
+          print(token);
+      return (<String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token',
+      });
+    }) );
 
+     print(response.statusCode);
     if (response.statusCode == 200) {
-      final posts = jsonDecode(response.body) as List;
+      print(response.body);
+      final posts = jsonDecode(response.body)["data"] as List;
+      print("decode");
+
       return posts.map((post) => Post.fromJson(post)).toList();
     } else {
       throw Exception('Failed to load posts');
@@ -42,9 +61,14 @@ class PostDataProvider {
   Future<void> deletePost(String id) async {
     final http.Response response = await httpClient.delete(
       '$_baseUrl/post/delete/$id',
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
+        headers: await SharedPrefUtils.getStringValuesSF().then((token){
+          print("jhhyughygyjgyygjyyj");
+          print(token);
+          return (<String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': 'Bearer $token',
+          });
+        })
     );
 
     if (response.statusCode != 204) {

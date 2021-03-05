@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mothers_hub/_routing/routes.dart';
 import 'package:mothers_hub/utils/colors.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:mothers_hub/views/landing.dart';
+import 'package:mothers_hub/views/register.dart';
 
 class ResetPasswordPage extends StatefulWidget {
+  static const routeName = "/resetPasswordViewRoute";
   @override
   _ResetPasswordPageState createState() => _ResetPasswordPageState();
 }
@@ -81,7 +83,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
       ),
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: () => Navigator.pushNamed(context, landingViewRoute),
+        onPressed: () => Navigator.pushNamed(context, LandingPage.routeName),
         color: Colors.white,
         shape: new RoundedRectangleBorder(
           borderRadius: new BorderRadius.circular(7.0),
@@ -99,7 +101,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
     final newUser = Padding(
       padding: EdgeInsets.only(top: 50.0),
       child: InkWell(
-        onTap: () => Navigator.pushNamed(context, registerViewRoute),
+        onTap: () => Navigator.pushNamed(context, RegisterPage.routeName),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[

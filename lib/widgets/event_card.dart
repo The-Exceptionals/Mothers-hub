@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:mothers_hub/bloc/bloc.dart';
 import 'package:mothers_hub/models/event.dart';
+import 'package:mothers_hub/views/tabs/editpost.dart';
 
 class EventCard extends StatelessWidget {
-  final Event feed;
+  final Event event;
 
-  const EventCard({Key key, this.feed}) : super(key: key);
+  const EventCard( this.event) ;
   @override
   Widget build(BuildContext context) {
     final userimage = InkWell(
       onTap: () {},
-      child: Hero(
-        tag: feed.title,
+      child: Container(
         child: Container(
           margin: EdgeInsets.only(right: 10.0),
           height: 40.0,
@@ -24,14 +26,14 @@ class EventCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          feed.title,
+          event.title,
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
           ),
         ),
         Text(
-          feed.date,
+          "",
           style: TextStyle(
             color: Colors.grey.withOpacity(0.6),
             fontWeight: FontWeight.bold,
@@ -48,7 +50,7 @@ class EventCard extends StatelessWidget {
     final descriptionText = Container(
       height: 80.0,
       child: Text(
-        feed.title,
+        event.body,
         style: TextStyle(
           color: Colors.grey,
           fontWeight: FontWeight.w600,
@@ -70,10 +72,12 @@ class EventCard extends StatelessWidget {
               color: Colors.grey,
               hoverColor: Colors.black,
               onPressed: () =>
-                  Navigator.of(context).pushNamed(editPostViewRoute)),
+                  Navigator.of(context).pushNamed(EditPostPage.routeName)),
           IconButton(
             icon: Icon(LineIcons.trash),
-            onPressed: null,
+            onPressed: (){
+              BlocProvider.of<EventBloc>(context).add(EventDelete(event));
+            },
           ),
         ]),
         Row(

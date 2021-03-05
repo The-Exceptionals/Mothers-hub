@@ -14,7 +14,7 @@ class Post extends Equatable {
 
   factory Post.fromJson(Map<String, dynamic> json) {
     return Post(
-      id: json['id'],
+      id: json['_id'],
       title: json['title'],
       body: json['body'],
     );
