@@ -1,15 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:mothers_hub/bloc/bloc.dart';
+import 'package:mothers_hub/bloc/event/event_bloc.dart';
+import 'package:mothers_hub/bloc/post/post_bloc.dart';
+import 'package:mothers_hub/models/event.dart';
+import 'package:mothers_hub/views/home.dart';
 
 
 class AddEventPage extends StatefulWidget {
+  static const routeName = "/addEventViewRoute";
   @override
   AddEventState createState() => AddEventState();
 }
 
 class AddEventState extends State<AddEventPage> {
   final _formKey = GlobalKey<FormState>();
+  String title="";
+  String eventbody="";
 
   @override
   Widget build(BuildContext context) {
@@ -50,9 +59,61 @@ class AddEventState extends State<AddEventPage> {
         key: _formKey,
         child: Column(
           children: <Widget>[
-            _buildFormField('Title', LineIcons.pencil, 8),
+            TextFormField(
+              onChanged: (value){
+                setState(() {
+                  title=value;
+                });
+              },
+              decoration: InputDecoration(
+                labelText: "body",
+                labelStyle: TextStyle(color: Colors.black),
+                prefixIcon: Icon(
+                  LineIcons.pencil,
+                  color: Colors.black,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                ),
+                isDense: true,
+                contentPadding: EdgeInsets.all(20),
+              ),
+              keyboardType: TextInputType.multiline,
+              maxLines: null,
+              style: TextStyle(color: Colors.black),
+              cursorColor: Colors.black,
+            ),
             formFieldSpacing,
-            _buildFormField('Event', LineIcons.pencil, 20),
+            TextFormField(
+              onChanged: (value){
+                setState(() {
+                  eventbody=value;
+                });
+              },
+              decoration: InputDecoration(
+                labelText: "Event",
+                labelStyle: TextStyle(color: Colors.black),
+                prefixIcon: Icon(
+                  LineIcons.pencil,
+                  color: Colors.black,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                ),
+                isDense: true,
+                contentPadding: EdgeInsets.all(20),
+              ),
+              keyboardType: TextInputType.multiline,
+              maxLines: null,
+              style: TextStyle(color: Colors.black),
+              cursorColor: Colors.black,
+            ),
             formFieldSpacing,
           ],
         ),
@@ -75,7 +136,10 @@ class AddEventState extends State<AddEventPage> {
           elevation: 10.0,
           shadowColor: Colors.black87,
           child: MaterialButton(
-            onPressed: () => Navigator.of(context).pushNamed(homeViewRoute),
+            onPressed: () {
+              BlocProvider.of<EventBloc>(context).add(EventCreate(Event(body:eventbody,title:title)));
+              Navigator.of(context).pushNamed(HomePage.routeName);
+            },
             child: Text(
               'ADD EVENT',
               style: TextStyle(

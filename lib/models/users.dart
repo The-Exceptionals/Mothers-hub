@@ -25,8 +25,9 @@ class User {
   int id;
   String username;
   String email;
+  String password;
 
-  User({this.id, this.username, this.email});
+  User({this.id, this.username, this.email, this.password});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];

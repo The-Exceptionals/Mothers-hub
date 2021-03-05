@@ -47,7 +47,8 @@ class EventBloc extends Bloc<EventEvent, EventState> {
         final events = await eventRepository.getEvents();
         yield EventsLoadSuccess(events);
       } catch (_) {
-        yield EventOperationFailure();
+        final events = await eventRepository.getEvents();
+        yield EventsLoadSuccess(events);
       }
     }
   }

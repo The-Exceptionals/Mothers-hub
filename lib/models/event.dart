@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 @immutable
 class Event extends Equatable {
-  Event({this.id, @required this.title, @required this.body, @required this.date});
+  Event({this.id, @required this.title, @required this.body, this.date});
 
   final String id;
   final String title;
@@ -15,7 +15,7 @@ class Event extends Equatable {
 
   factory Event.fromJson(Map<String, dynamic> json) {
     return Event(
-      id: json['id'],
+      id: json['_id'],
       title: json['title'],
       body: json['body'],
       date: json['date']

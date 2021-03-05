@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:mothers_hub/mh.dart';
 import 'package:mothers_hub/models/users.dart';
+import 'package:mothers_hub/views/tabs/editpost.dart';
 
 class FeedCard1 extends StatelessWidget {
-  final Post feed;
-  final User user;
+  final Post post;
 
-  const FeedCard1({Key key, this.feed, this.user}) : super(key: key);
+  const FeedCard1(this.post) ;
+
   @override
   Widget build(BuildContext context) {
     final userimage = InkWell(
       onTap: () {},
-      child: Hero(
-        tag: user.username,
+      child: Container(
         child: Container(
           margin: EdgeInsets.only(right: 10.0),
           height: 40.0,
@@ -26,14 +27,14 @@ class FeedCard1 extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          user.username,
+          'username',
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
           ),
         ),
         Text(
-          feed.title,
+          post.title,
           style: TextStyle(
             color: Colors.grey.withOpacity(0.6),
             fontWeight: FontWeight.bold,
@@ -50,7 +51,7 @@ class FeedCard1 extends StatelessWidget {
     final descriptionText = Container(
       height: 80.0,
       child: Text(
-        feed.body,
+        post.body,
         style: TextStyle(
           color: Colors.grey,
           fontWeight: FontWeight.w600,
@@ -72,10 +73,13 @@ class FeedCard1 extends StatelessWidget {
               color: Colors.grey,
               hoverColor: Colors.black,
               onPressed: () =>
-                  Navigator.of(context).pushNamed(editPostViewRoute)),
+
+                  Navigator.of(context).pushNamed(EditPostPage.routeName)),
           IconButton(
             icon: Icon(LineIcons.trash),
-            onPressed: null,
+            onPressed:(){
+              BlocProvider.of<PostBloc>(context).add(PostDelete(post));
+            },
           ),
         ]),
         Row(
@@ -132,6 +136,7 @@ class FeedCard1 extends StatelessWidget {
                       ),
                       descriptionText,
                       divider,
+
                       footer
                     ],
                   ),

@@ -6,7 +6,7 @@ import 'package:mothers_hub/views/tabs/events.dart';
 import 'package:line_icons/line_icons.dart';
 
 class HomePage extends StatefulWidget {
-  static const routeName = 'HomePage';
+  static const routeName = '/homeViewRoute';
   @override
   _HomePageState createState() => _HomePageState();
 }

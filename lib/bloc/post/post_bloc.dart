@@ -11,12 +11,18 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
   @override
   Stream<PostState> mapEventToState(PostEvent event) async* {
+    print("in bloc");
     if (event is PostLoad) {
+      print("surrrrr");
       yield PostLoading();
       try {
+        print("hhhhhhhhhhhhhhhhhhh");
         final posts = await postRepository.getPosts();
+        print("djjjjjjjjjjjjjjjjj");
+        print(posts.length);
         yield PostsLoadSuccess(posts);
-      } catch (_) {
+      } catch (e) {
+        print(e);
         yield PostOperationFailure();
       }
     }
@@ -26,7 +32,8 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         await postRepository.createPost(event.post);
         final posts = await postRepository.getPosts();
         yield PostsLoadSuccess(posts);
-      } catch (_) {
+      } catch (e) {
+        print(e);
         yield PostOperationFailure();
       }
     }
@@ -44,10 +51,15 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     if (event is PostDelete) {
       try {
         await postRepository.deletePost(event.post.id);
+        yield PostLoading();
         final posts = await postRepository.getPosts();
         yield PostsLoadSuccess(posts);
-      } catch (_) {
-        yield PostOperationFailure();
+      } catch (e) {
+        print(e);
+        yield PostLoading();
+        final posts = await postRepository.getPosts();
+        yield PostsLoadSuccess(posts);
+       // yield PostOperationFailure();
       }
     }
   }

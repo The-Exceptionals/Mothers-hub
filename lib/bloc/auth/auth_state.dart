@@ -1,40 +1,34 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:mothers_hub/models/users.dart';
 
-abstract class AuthState extends Equatable {
-  const AuthState();
-}
+abstract class AuthenticationState extends Equatable {
+  const AuthenticationState();
 
-class AuthUninitialized extends AuthState {
   @override
   List<Object> get props => [];
-
-  @override
-  String toString() => 'AuthUninitialized';
 }
 
-class AuthLoading extends AuthState {
-  @override
-  // TODO: implement props
-  List<Object> get props => null;
+class AuthenticationInitial extends AuthenticationState {}
+
+class AuthenticationLoading extends AuthenticationState {}
+
+class AuthenticationNotAuthenticated extends AuthenticationState {}
+
+class AuthenticationAuthenticated extends AuthenticationState {
+  final User user;
+
+  AuthenticationAuthenticated({@required this.user});
 
   @override
-  String toString() => 'AuthLoading';
+  List<Object> get props => [user];
 }
 
-class AuthAuthenticated extends AuthState {
-  @override
-  // TODO: implement props
-  List<Object> get props => null;
+class AuthenticationFailure extends AuthenticationState {
+  final String message;
+
+  AuthenticationFailure({@required this.message});
 
   @override
-  String toString() => 'AuthAuthenticated';
-}
-
-class AuthNotAuthenticated extends AuthState {
-  @override
-  // TODO: implement props
-  List<Object> get props => null;
-
-  @override
-  String toString() => 'AuthNotAuthenticated';
+  List<Object> get props => [message];
 }

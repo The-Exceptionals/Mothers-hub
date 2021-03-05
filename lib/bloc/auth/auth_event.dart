@@ -1,23 +1,27 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:mothers_hub/models/users.dart';
 
-abstract class AuthEvent extends Equatable {
-  const AuthEvent();
-}
+abstract class AuthenticationEvent extends Equatable {
+  const AuthenticationEvent();
 
-class AppStarted extends AuthEvent {
   @override
-  // TODO: implement props
-  List<Object> get props => null;
+  List<Object> get props => [];
 }
 
-class LoggedIn extends AuthEvent {
+// Fired just after the app is launched
+class AppLoaded extends AuthenticationEvent {}
+
+// Fired when a user has successfully logged in
+class UserLoggedIn extends AuthenticationEvent {
+  final User user;
+
+  UserLoggedIn({@required this.user});
+
   @override
-  // TODO: implement props
-  List<Object> get props => null;
+  List<Object> get props => [user];
 }
 
-class LogggedOut extends AuthEvent {
-  @override
-  // TODO: implement props
-  List<Object> get props => null;
-}
+// Fired when the user has logged out
+class UserLoggedOut extends AuthenticationEvent {}
+

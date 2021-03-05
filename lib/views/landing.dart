@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:mothers_hub/utils/colors.dart';
 import 'package:mothers_hub/utils/utils.dart';
 import 'package:flutter/services.dart';
+import 'package:mothers_hub/views/login.dart';
+import 'package:mothers_hub/views/mh_route.dart';
+import 'package:mothers_hub/views/register.dart';
 
 class LandingPage extends StatelessWidget {
+
+  static const routeName = "/landingViewRoute";
   @override
   Widget build(BuildContext context) {
     // Change Status Bar Color
@@ -41,7 +46,7 @@ class LandingPage extends StatelessWidget {
     );
 
     final loginBtn = InkWell(
-      onTap: () => Navigator.pushNamed(context, loginViewRoute),
+      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage())),
       child: Container(
         height: 60.0,
         width: MediaQuery.of(context).size.width,
@@ -73,7 +78,7 @@ class LandingPage extends StatelessWidget {
       ),
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: () => Navigator.pushNamed(context, registerViewRoute),
+        onPressed: () => Navigator.pushNamed(context, RegisterPage.routeName),
         color: Colors.white,
         shape: new RoundedRectangleBorder(
           borderRadius: new BorderRadius.circular(7.0),

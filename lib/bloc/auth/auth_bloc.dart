@@ -1,57 +1,62 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:flutter/material.dart';
 import 'package:mothers_hub/mh.dart';
 import 'package:bloc/bloc.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:mothers_hub/repository/auth_repository.dart';
 import 'package:overlay_support/overlay_support.dart';
 
-class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final AuthData authSerivce;
+class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
+  final AuthenticationRepository authenticationRepository;
 
-  AuthBloc(this.authSerivce) : super(null);
+   AuthenticationBloc({@required this.authenticationRepository})
+      : assert(authenticationRepository != null),
+        super(AuthenticationInitial());
 
-  @override
-  AuthState get initialState => AuthUninitialized();
-
-  login(data) async {
-    return await this.authSerivce.login(data);
-  }
-
-  register(data) async {
-    return await this.authSerivce.register(data);
-  }
 
   @override
-  Stream<AuthState> mapEventToState(
-    AuthEvent event,
-  ) async* {
-    // TODO: Add Logic
-    if (event is AppStarted) {
-      // NEED TO KNOW IF USER IS CONNECTED OR NOT
-      yield AuthLoading();
-      var isLogin = await this.authSerivce.auth();
-      print(isLogin);
-      if (isLogin == false) {
-        this.dispatch(LogggedOut());
-      } else if (isLogin.containsKey('id')) {
-        this.dispatch(LoggedIn());
-      }
-    } else if (event is LoggedIn) {
-      yield AuthLoading();
-      final storage = new FlutterSecureStorage();
-      var key = await storage.read(key: "jwt");
-      if (key != null) {
-        toast('You\'r logged in ! ');
-        yield AuthAuthenticated();
-      } else {
-        this.dispatch(LogggedOut());
-      }
-    } else if (event is LogggedOut) {
-      yield AuthLoading();
-      final storage = new FlutterSecureStorage();
-      await storage.delete(key: "jwt");
-      toast('You\'r logged out ! ');
-      yield AuthNotAuthenticated();
+  Stream<AuthenticationState> mapEventToState(AuthenticationEvent event) async* {
+    print('getting hererererererererere');
+    if (event is AppLoaded) {
+       print('event is app loaded');
+      yield* _mapAppLoadedToState(event);
+    }
+
+    if (event is UserLoggedIn) {
+      yield* _mapUserLoggedInToState(event);
+    }
+
+    if (event is UserLoggedOut) {
+      yield* _mapUserLoggedOutToState(event);
     }
   }
+
+  Stream<AuthenticationState> _mapAppLoadedToState(AppLoaded event) async* {
+    yield AuthenticationLoading();
+    try {
+      final currentUser = await authenticationRepository.getCurrentUser();
+
+      if (currentUser != null) {
+        print('Found himmmm');
+        yield AuthenticationAuthenticated(user: currentUser);
+      } else {
+         print('Nope himmmm');
+        yield AuthenticationNotAuthenticated();
+      }
+    } catch (e) {
+      yield AuthenticationFailure(message: e.message ?? 'An unknown error occurred');
+    }
+  }
+
+  Stream<AuthenticationState> _mapUserLoggedInToState(UserLoggedIn event) async* {
+    print("Authenticateddddddddddddddddddddddddddddddd");
+    yield AuthenticationAuthenticated(user: event.user);
+  }
+
+  Stream<AuthenticationState> _mapUserLoggedOutToState(UserLoggedOut event) async* {
+    await authenticationRepository.signOut();
+    yield AuthenticationNotAuthenticated();
+  }
 }
+
+

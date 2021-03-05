@@ -2,19 +2,26 @@ import 'dart:convert';
 import 'package:meta/meta.dart';
 import 'package:mothers_hub/mh.dart';
 import 'package:http/http.dart' as http;
+import 'package:mothers_hub/utils/constants.dart';
+import 'package:mothers_hub/utils/shared_preferences.dart';
 
 class EventDataProvider {
-  final _baseUrl = 'http://192.168.0.101:5000';
+  final _baseUrl = baseUrl;
   final http.Client httpClient;
 
   EventDataProvider({@required this.httpClient}) : assert(httpClient != null);
 
   Future<Event> createEvent(Event event) async {
     final response = await httpClient.post(
-      Uri.http('192.168.0.189:5000', '/event/add'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
+      Uri.http(address, '/event/add'),
+      headers: await SharedPrefUtils.getStringValuesSF().then((token){
+        print("jhhyughygyjgyygjyyj");
+        print(token);
+        return (<String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        });
+      }),
       body: jsonEncode(<String, dynamic>{
         'title': event.title,
         'body': event.body,
@@ -30,10 +37,18 @@ class EventDataProvider {
   }
 
   Future<List<Event>> getEvents() async {
-    final response = await httpClient.get('$_baseUrl/event/getAll');
-
+    final response = await httpClient.get('$_baseUrl/event/getAll',
+        headers: await SharedPrefUtils.getStringValuesSF().then((token){
+      print("jhhyughygyjgyygjyyj");
+      print(token);
+      return (<String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token',
+      });
+    }));
+    print(response.body);
     if (response.statusCode == 200) {
-      final events = jsonDecode(response.body) as List;
+      final events = jsonDecode(response.body)["data"] as List;
       return events.map((event) => Event.fromJson(event)).toList();
     } else {
       throw Exception('Failed to load events');
@@ -43,9 +58,14 @@ class EventDataProvider {
   Future<void> deleteEvent(String id) async {
     final http.Response response = await httpClient.delete(
       '$_baseUrl/event/delete/$id',
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
+        headers: await SharedPrefUtils.getStringValuesSF().then((token){
+          print("jhhyughygyjgyygjyyj");
+          print(token);
+          return (<String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': 'Bearer $token',
+          });
+        }),
     );
 
     if (response.statusCode != 204) {
@@ -56,9 +76,14 @@ class EventDataProvider {
   Future<void> updateEvent(Event event) async {
     final http.Response response = await httpClient.put(
       '$_baseUrl/events/${event.id}',
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
+      headers: await SharedPrefUtils.getStringValuesSF().then((token){
+        print("jhhyughygyjgyygjyyj");
+        print(token);
+        return (<String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        });
+      }),
       body: jsonEncode(<String, dynamic>{
         'id': event.id,
         'title': event.title,
